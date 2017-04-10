@@ -58,10 +58,10 @@ class NewPost(Handler):
             self.render("newpost.html", title=title, post=post, error=error)
 
 class Blog(Handler):
-    def render_blog(self, title="", posts="", error=""):
+    def render_blog(self, title="", posts="", error="", single_post=""):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
 
-        self.render("blog.html", title=title, error=error, posts=posts)
+        self.render("blog.html", title=title, error=error, posts=posts, single_post=None)
 
     def get(self):
         self.render_blog()
