@@ -66,8 +66,20 @@ class Blog(Handler):
     def get(self):
         self.render_blog()
 
+class ViewPostHandler(Handler):
+    def get(self, id):
+        id = int(id)
+        single_post = Post.get_by_id(id)
+        if single_post:
+
+            self.render("blog.html", single_post=single_post)
+        else:
+            error = "We're sorry, but it seems there isn't a blog with that entry id."
+            self.render("blog.html", error=error)
+
 app = webapp2.WSGIApplication([
     ('/', Index),
     ('/newpost', NewPost),
-    ('/blog', Blog)
+    ('/blog', Blog),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
 ], debug=True)

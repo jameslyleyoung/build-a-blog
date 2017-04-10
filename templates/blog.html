@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for post in posts %}
-    <h3>{{post.title}}</h3>
-    <div>
-        <span>{{post.post}}</span>
-    </div>
-{% endfor %}
+
+<div class = "error">
+    {{error}}
+</div>
+    {% for post in posts %}
+        <h3>{{post.title}}</h3>
+        <div>
+            <span>{{post.post}}</span>
+        </div>
+        <hr />
+    {% endfor %}
+
+<div>
+    <h3>{{single_post.title}}</h3>
+</div>
+    <span>{{single_post.post}}</span>
 
 {% endblock %}
