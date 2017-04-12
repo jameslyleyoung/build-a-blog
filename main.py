@@ -27,18 +27,6 @@ class Index(Handler):
     def get(self):
         self.render("base.html")
 
-    def post(self):
-        title = self.request.get("title")
-        post = self.request.get("post")
-
-        if title and post:
-            a = Post(title=title, post=post)
-            a.put()
-
-            self.redirect('/')
-        else:
-            error = "we need both a title and some text for a post!"
-            self.render_blog(title, art, error)
 
 class NewPost(Handler):
     def get(self):
@@ -52,27 +40,26 @@ class NewPost(Handler):
             a = Post(title=title, post=post)
             a.put()
 
-            self.redirect('/')
+            self.redirect('/blog/%s' % str(a.key().id()))
         else:
             error = "we need both a title and some text for a post!"
             self.render("newpost.html", title=title, post=post, error=error)
 
 class Blog(Handler):
-    def render_blog(self, title="", posts="", error="", single_post=""):
+    def render_blog(self, title="", posts="", error="", solo_post=None):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
 
-        self.render("blog.html", title=title, error=error, posts=posts, single_post=None)
+        self.render("blog.html", title=title, error=error, posts=posts, solo_post=None)
 
     def get(self):
         self.render_blog()
 
 class ViewPostHandler(Handler):
-    def get(self, id):
-        id = int(id)
-        single_post = Post.get_by_id(id)
-        if single_post:
+    def get(self, postid):
 
-            self.render("blog.html", single_post=single_post)
+        solo_post = Post.get_by_id(int(postid))
+        if solo_post != None:
+            self.render("blog.html", solo_post=solo_post)
         else:
             error = "We're sorry, but it seems there isn't a blog with that entry id."
             self.render("blog.html", error=error)
@@ -81,5 +68,5 @@ app = webapp2.WSGIApplication([
     ('/', Index),
     ('/newpost', NewPost),
     ('/blog', Blog),
-    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
+    webapp2.Route('/blog/<postid:\d+>', ViewPostHandler)
 ], debug=True)

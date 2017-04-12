@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<hr />
 <div class = "error">
     {{error}}
 </div>
+    {% if solo_post %}
+        {{ solo_post.title}}
+        <hr />
+        {{ solo_post.post }}
+    {% endif %}
+
     {% for post in posts %}
         <h3>{{post.title}}</h3>
         <div>
@@ -13,9 +19,5 @@
         <hr />
     {% endfor %}
 
-<div>
-    <h3>{{single_post.title}}</h3>
-</div>
-    <span>{{single_post.post}}</span>
 
 {% endblock %}
