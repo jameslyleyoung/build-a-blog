@@ -12,7 +12,7 @@
     {% endif %}
 
     {% for post in posts %}
-        <h3>{{post.title}}</h3>
+        <a href="/blog/{{post.key().id()}}"><h3>{{post.title}}</h3></a>
         <div>
             <span>{{post.post}}</span>
         </div>
